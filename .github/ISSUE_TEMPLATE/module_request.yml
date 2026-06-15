@@ -1,0 +1,49 @@
+name: "Module Request"
+description: Create a new ticket for a new module request
+title: "[REQUEST] - <title>"
+labels: [
+  "new module"
+]
+body:
+  - type: checkboxes
+    attributes:
+      label: Is there an existing module request for this?
+      description: Please search to see if an issue already exists for the module you are requesting.
+      options:
+        - label: I have searched the existing issues here 
+          required: true
+  - type: textarea
+    id: description
+    attributes:
+      label: Description
+      description: Please leave a description for the module request here.
+    validations:
+      required: true
+  - type: textarea
+    id: resource
+    attributes:
+      label: Resource Definitions
+      description: Please provide a list with all the (AzureRM) resource definitions needed within the module.
+      placeholder: |
+        ex. azurerm_container_app_environment
+        azurerm_container_app
+        azurerm_container_app_job
+    validations:
+      required: true
+  - type: textarea
+    id: config
+    attributes:
+      label: Potential Terraform Configuration
+      description: Please provide an example of what the new resource for the module could look like in a Terraform config.
+    validations:
+      required: false
+  - type: textarea
+    id: references
+    attributes:
+      label: References
+      description: |
+        Information about referencing Github Issues: https://help.github.com/articles/basic-writing-and-formatting-syntax/#referencing-issues-and-pull-requests
+
+        Are there any other GitHub issues (open or closed) or pull requests that should be linked here? Vendor blog posts or documentation? For example:
+
+        * https://azure.microsoft.com/en-us/roadmap/virtual-network-service-endpoint-for-azure-cosmos-db/

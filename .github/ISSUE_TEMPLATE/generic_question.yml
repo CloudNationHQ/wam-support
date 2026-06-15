@@ -1,0 +1,46 @@
+name: "Generic Question"
+description: Create a new ticket for a generic question
+title: "[REQUEST] - <title>"
+labels: [
+  "new module"
+]
+body:
+  - type: checkboxes
+    attributes:
+      label: Is there an existing question for this?
+      description: Please search to see if an issue already exists for the generic question you are submitting.
+      options:
+        - label: I have searched the existing issues here and read the documentation at wam.cloudnation.nl.
+          required: true
+  - type: checkboxes
+    attributes:
+      label: Is your question generic or related to a specific module?
+      description: Please make sure your question is not related to a specific module, if so use the question template of that module instead.
+      options:
+        - label: My question is generic and not tied to a specific module
+          required: true
+  - type: input
+    id: question
+    attributes:
+      label: Question
+      description: Please leave your (generic) question here.
+      placeholder: I have a question about....
+    validations:
+      required: true
+  - type: textarea
+    id: context
+    attributes:
+      label: Additional (Terraform) context
+      description: Please provide additional context (if needed).
+    validations:
+      required: false
+  - type: textarea
+    id: references
+    attributes:
+      label: References
+      description: |
+        Information about referencing Github Issues: https://help.github.com/articles/basic-writing-and-formatting-syntax/#referencing-issues-and-pull-requests
+
+        Are there any other GitHub issues (open or closed) or pull requests that should be linked here? Vendor blog posts or documentation? For example:
+
+        * https://azure.microsoft.com/en-us/roadmap/virtual-network-service-endpoint-for-azure-cosmos-db/
