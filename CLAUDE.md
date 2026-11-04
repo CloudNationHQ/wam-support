@@ -268,8 +268,43 @@ Only create a `modules/<name>/` sub-module when one of these four blockers appli
 
 ## 20. `.gitignore` policy
 
-- Module root: **track** `.terraform.lock.hcl` (ensures reproducibility for consumers)
-- `examples/*`: **ignore** it (each example initialises its own)
+Every module repo has this `.gitignore` at the root:
+
+```gitignore
+# terraform working dirs and state
+**/.terraform/*
+*.tfstate
+*.tfstate.*
+crash.log
+crash.*.log
+
+# lock files: reusable module, consumers lock in their own root module
+.terraform.lock.hcl
+
+# local variable / override / plan files
+*.tfvars
+*.tfvars.json
+override.tf
+override.tf.json
+*_override.tf
+*_override.tf.json
+*tfplan*
+
+# CLI config
+.terraformrc
+terraform.rc
+
+# go test artefacts (tests/)
+tests/vendor/
+```
+
+- **Working dirs and state**: local `terraform init`/`apply` output; state can contain secrets.
+- **Lock files**: ignored **everywhere**, at the module root and in `examples/`. Terraform only uses the lock file of the root module, so a reusable module's lock file is never used by its consumers; they lock providers in their own root module.
+- **Variable, override and plan files**: local, environment-specific and possibly sensitive.
+- **CLI config**: personal Terraform CLI settings and credentials.
+- **Go test artefacts**: vendored dependencies of the tests under `tests/`.
+
+Repos with a different `.gitignore` are aligned when they are next changed; there is no bulk rollout.
 
 ---
 
