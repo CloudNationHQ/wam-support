@@ -87,9 +87,9 @@ terraform {
 
 ---
 
-## 6. Four outer globals
+## 6. Outer globals and defaults
 
-These are the only variables allowed to have defaults:
+Only these three outer globals may have a value default:
 
 ```hcl
 var.location
@@ -99,6 +99,21 @@ var.tags
 
 - Inner object value always wins over outer global
 - Use `coalesce(lookup(var.vault, "location", null), var.location)` to resolve
+- Every other variable is either required (no default) or optional with an empty default: `null`, `{}` or `[]`. An empty default only means "not set"; it never chooses a value for the caller.
+- Exception: `use_existing_*` flags (rule 19) default to `false`, so the module creates the resource unless the caller says otherwise.
+- No value defaults (`true`, `false`, numbers, strings, non-empty maps) on any other top-level variable. Put them on the type in `variables.tf` instead (rule 7): `optional(string, "GRS")`.
+
+```hcl
+variable "role_assignments" {   # ok: optional, empty default
+  type    = map(object({ ... }))
+  default = {}
+}
+
+variable "enable_telemetry" {   # not ok: value default
+  type    = bool
+  default = true
+}
+```
 
 ---
 
